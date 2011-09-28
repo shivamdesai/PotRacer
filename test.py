@@ -14,14 +14,15 @@ if __name__ == "__main__":
     clock = pygame.time.Clock()
 
     track = Track()
-    for t in xrange(1000):
+    for t in xrange(10):
         track.addSegment()
 
-    camP1 = Camera((20,20,300,300))
-    #camP2 = Camera()
+    camP1 = Camera((0,0,Settings.SCREEN_WIDTH/2,Settings.SCREEN_HEIGHT))
+    camP2 = Camera((Settings.SCREEN_WIDTH/2,0,Settings.SCREEN_WIDTH/2,Settings.SCREEN_HEIGHT))
 
     renderer.setTrack(track)
     renderer.addCamera(camP1)
+    renderer.addCamera(camP2)
 
     timeDelta = clock.tick(Settings.MAX_FPS)
 

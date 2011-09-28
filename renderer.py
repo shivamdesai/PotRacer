@@ -23,7 +23,7 @@ class CustomRenderer:
     def render(self, clock):
 
         for cam in self.itercams():
-            cam.screen.fill((255,0,0))
+            cam.screen.fill((255,0,cam.uid*255))
             for r in self.track.getSegmentsVisibleFromCam(cam):
                 pygame.draw.rect(cam.screen, (255,255,255), r)
             self.display.blit(cam.screen, cam)
