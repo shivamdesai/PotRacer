@@ -17,7 +17,7 @@ if __name__ == "__main__":
     for t in xrange(1000):
         track.addSegment()
 
-    camP1 = Camera()
+    camP1 = Camera((20,20,300,300))
     #camP2 = Camera()
 
     renderer.setTrack(track)
