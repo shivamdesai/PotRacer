@@ -7,10 +7,11 @@ class Camera(Rect):
     """
     nextUID = 0
 
-    def __init__(self, *rect):
-        Rect.__init__(self, *rect)
+    def __init__(self, anchorRect, dispRect):
+        Rect.__init__(self, anchorRect)
         self.uid = Camera._incrementUID()
         self.screen = Surface((self.width, self.height))
+        self.displayRect = Rect(dispRect)
 
     @classmethod
     def _incrementUID(cls):

@@ -17,8 +17,11 @@ if __name__ == "__main__":
     for t in xrange(10):
         track.addSegment()
 
-    camP1 = Camera((0,0,Settings.SCREEN_WIDTH/2,Settings.SCREEN_HEIGHT))
-    camP2 = Camera((Settings.SCREEN_WIDTH/2,0,Settings.SCREEN_WIDTH/2,Settings.SCREEN_HEIGHT))
+    camP1 = Camera((0,0,Settings.SCREEN_WIDTH/2,Settings.SCREEN_HEIGHT),
+    (0,0,Settings.SCREEN_WIDTH/2,Settings.SCREEN_HEIGHT))
+    camP2 = Camera((0,0,Settings.SCREEN_WIDTH/2,Settings.SCREEN_HEIGHT), (Settings.SCREEN_WIDTH/2,0,Settings.SCREEN_WIDTH/2,Settings.SCREEN_HEIGHT))
+
+    camP2.left -= 100
 
     renderer.setTrack(track)
     renderer.addCamera(camP1)
@@ -32,6 +35,8 @@ if __name__ == "__main__":
                 running = False
             elif event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
                 running = False
+
+        camP2.top += timeDelta*0.1
 
         renderer.render(clock)
         timeDelta = clock.tick(Settings.MAX_FPS)

@@ -26,7 +26,7 @@ class CustomRenderer:
             cam.screen.fill((255,0,cam.uid*255))
             for r in self.track.getSegmentsVisibleFromCam(cam):
                 pygame.draw.rect(cam.screen, (255,255,255), r)
-            self.display.blit(cam.screen, cam)
+            self.display.blit(cam.screen, cam.displayRect)
 
         pygame.display.set_caption("POTRacer Demo at fps: "+str(clock.get_fps()))
 
