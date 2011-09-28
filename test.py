@@ -9,19 +9,16 @@ from camera import Camera
 if __name__ == "__main__":
     running = True
 
-    pygame.init()
-    screen = pygame.display.set_mode((Settings.SCREEN_WIDTH,
-                                      Settings.SCREEN_HEIGHT))
-    pygame.display.set_caption("POTRacer Demo")
+    renderer = CustomRenderer()
+
     clock = pygame.time.Clock()
 
     track = Track()
-    renderer = CustomRenderer()
 
     camP1 = Camera()
     #camP2 = Camera()
 
-    renderer.addTrack(track)
+    renderer.setTrack(track)
     renderer.addCamera(camP1)
 
     timeDelta = clock.tick(Settings.MAX_FPS)
@@ -34,8 +31,6 @@ if __name__ == "__main__":
                 running = False
 
         track.addSegment()
-        for r in track.getSegmentsVisibleFromCam(None):
-            pygame.draw.rect(screen, (255,255,255), r)
 
-        pygame.display.flip()
+        renderer.render()
         timeDelta = clock.tick(Settings.MAX_FPS)
