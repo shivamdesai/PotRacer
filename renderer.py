@@ -17,8 +17,10 @@ class CustomRenderer:
     def addCamera(self, cam):
         self.cameras[cam.uid] = cam
 
-    def render(self):
+    def render(self, clock):
         for r in self.track.getSegmentsVisibleFromCam(None):
             pygame.draw.rect(self.screen, (255,255,255), r)
+
+        pygame.display.set_caption("POTRacer Demo at fps: "+str(clock.get_fps()))
 
         pygame.display.flip()

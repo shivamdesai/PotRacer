@@ -15,22 +15,26 @@ class Track:
         self.trackEnd = None
 
     def attachCamera(self, cam):
-        self.cameras[cam.uid] = cam
+        #FIXME
+        self.cameras[cam.uid] = None
+        #Should actually be pointing to one of the segs the cam can see
 
     def detachCamera(self, cam):
         del self.cameras[cam.uid]
 
     def addSegment(self):
         if self.trackStart == None:
-            print "AddFirst"
+            #No segments have been added
             left = (Settings.SCREEN_WIDTH/2 - Settings.MIN_TRACK_WIDTH, 0)
             right = (Settings.SCREEN_WIDTH/2 + Settings.MIN_TRACK_WIDTH, 0)
             newSeg = TrackSegment(left, right, prev=None, next=None)
             self.trackStart = newSeg
             self.trackEnd = newSeg
-            print right[0] - left[0]
+            #print right[0] - left[0]
+            for c in self.cameras:
+                self.cameras[c.uid] = self.trackStart
         else:
-            print "AddNew"
+            #The track already has some segments
             vert = random.randint(Settings.MIN_TRACK_WIDTH,
                                 Settings.MIN_TRACK_WIDTH) + self.trackEnd.left[1]
             horizShift = random.randint(-Settings.MIN_TRACK_WIDTH/2,
@@ -43,15 +47,14 @@ class Track:
             newSeg = TrackSegment(left, right, prev=self.trackEnd, next=None)
             self.trackEnd.next = newSeg
             self.trackEnd = newSeg
-            print right[0] - left[0]
+            #print right[0] - left[0]
 
     def getSegmentsVisibleFromCam(self, cam):
         #FIXME
+        #Does not use any camera information
         ptr = self.trackStart #should actually use cam pos as ref
         while ptr:
             if ptr.prev:
-                #print (ptr.prev.left[0],ptr.prev.left[1], ptr.right[0],ptr.right[1])
-                #print ptr.prev.right[0] - ptr.prev.left[0]
                 yield (ptr.prev.left[0],ptr.prev.left[1], ptr.prev.right[0]-ptr.prev.left[0],ptr.right[1]-ptr.prev.left[1])
             ptr = ptr.next
 

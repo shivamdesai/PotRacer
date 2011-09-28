@@ -14,6 +14,8 @@ if __name__ == "__main__":
     clock = pygame.time.Clock()
 
     track = Track()
+    for t in xrange(1000):
+        track.addSegment()
 
     camP1 = Camera()
     #camP2 = Camera()
@@ -30,7 +32,5 @@ if __name__ == "__main__":
             elif event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
                 running = False
 
-        track.addSegment()
-
-        renderer.render()
+        renderer.render(clock)
         timeDelta = clock.tick(Settings.MAX_FPS)
