@@ -55,8 +55,8 @@ class Track:
         ptr = self.trackStart #should actually use cam pos as ref
         while ptr:
             if ptr.prev:
-                yield (ptr.prev.left[0]+cam.left,
-                       ptr.prev.left[1]+cam.top,
+                yield (ptr.prev.left[0]+cam.anchorPt.x,
+                       ptr.prev.left[1]+cam.anchorPt.y,
                        ptr.prev.right[0]-ptr.prev.left[0],
                        ptr.right[1]-ptr.prev.left[1])
             ptr = ptr.next

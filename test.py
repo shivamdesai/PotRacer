@@ -21,7 +21,7 @@ if __name__ == "__main__":
     (0,0,Settings.SCREEN_WIDTH/2,Settings.SCREEN_HEIGHT))
     camP2 = Camera((0,0,Settings.SCREEN_WIDTH/2,Settings.SCREEN_HEIGHT), (Settings.SCREEN_WIDTH/2,0,Settings.SCREEN_WIDTH/2,Settings.SCREEN_HEIGHT))
 
-    camP2.left -= 200
+    camP2.anchorPt.x -= 200
 
     renderer.setTrack(track)
     renderer.addCamera(camP1)
@@ -36,8 +36,8 @@ if __name__ == "__main__":
             elif event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
                 running = False
 
-        camP2.top -= timeDelta*0.1
-        camP1.left -= timeDelta*0.05
+        camP2.anchorPt.y -= timeDelta*0.1
+        camP1.anchorPt.x -= timeDelta*0.05
 
         renderer.render(clock)
         timeDelta = clock.tick(Settings.MAX_FPS)
