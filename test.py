@@ -12,15 +12,15 @@ class Camera:
     Cameras have a unique id, gameworld
     position, and viewport size.
     """
-    nextID = 0
+    nextUID = 0
 
     def __init__(self):
-        self.id = Camera.nextID
-        Camera._incrementID()
+        self.uid = Camera.nextUID
+        Camera._incrementUID()
 
     @classmethod
-    def _incrementID(cls):
-        Camera.nextID += 1
+    def _incrementUID(cls):
+        Camera.nextUID += 1
 
 class Track:
     """
@@ -35,10 +35,10 @@ class Track:
         self.trackEnd = None
 
     def attachCamera(self, cam):
-        self.cameras[cam.id] = cam
+        self.cameras[cam.uid] = cam
 
     def detachCamera(self, cam):
-        del self.cameras[cam.id]
+        del self.cameras[cam.uid]
 
     def addSegment(self):
         if self.trackStart == None:
