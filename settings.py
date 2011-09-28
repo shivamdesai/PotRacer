@@ -1,0 +1,5 @@
+class Settings:
+    SCREEN_WIDTH = 600
+    SCREEN_HEIGHT = 600
+
+    MIN_TRACK_WIDTH = 80
