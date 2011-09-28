@@ -1,4 +1,6 @@
-class Camera:
+from pygame import Rect
+
+class Camera(Rect):
     """
     Cameras have a unique id, gameworld
     position, and viewport size.
@@ -12,6 +14,3 @@ class Camera:
     @classmethod
     def _incrementUID(cls):
         Camera.nextUID += 1
-
-
-

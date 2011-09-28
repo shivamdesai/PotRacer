@@ -1,5 +1,6 @@
 class Settings:
     SCREEN_WIDTH = 600
     SCREEN_HEIGHT = 600
+    MAX_FPS = 60
 
     MIN_TRACK_WIDTH = 80
