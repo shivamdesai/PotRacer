@@ -30,6 +30,7 @@ if __name__ == "__main__":
     timeDelta = clock.tick(Settings.MAX_FPS)
 
     while running:
+
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
