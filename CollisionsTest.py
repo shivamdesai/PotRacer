@@ -3,6 +3,7 @@ from pygame.locals import *
 from pygame.color import *
 import pymunk as phys
 import math, sys, random
+from os.path import join as joinPath
 
 def to_pygame(p):
     """Small hack to convert pymunk to pygame coordinates"""
@@ -30,13 +31,16 @@ static_body = phys.Body(phys.inf, phys.inf)
 static_lines = [phys.Segment(static_body, phys.Vec2d(150.0, 150.0), phys.Vec2d(450.0, 150.0), 1.0),
                 phys.Segment(static_body, phys.Vec2d(450.0, 150.0), phys.Vec2d(450.0, 450.0), 1.0),
                 phys.Segment(static_body, phys.Vec2d(450.0, 450.0), phys.Vec2d(150.0, 450.0), 1.0),
-                phys.Segment(static_body, phys.Vec2d(150.0, 450.0), phys.Vec2d(150.0, 150.0), 1.0)]   
+                phys.Segment(static_body, phys.Vec2d(150.0, 450.0), phys.Vec2d(150.0, 150.0), 1.0)]
 for line in static_lines:
-        line.elasticity = 0.95
+    line.elasticity = 0.95
 space.add_static(static_lines)
 
 ## Car Image
-img = pygame.image.load("beta.png")
+if pygame.image.get_extended():
+    img = pygame.image.load(joinPath("images","beta.png"))
+else:
+    img = pygame.image.load(joinPath("images","beta.bmp"))
 
 index = 0
 
@@ -61,38 +65,38 @@ while running:
         car.friction = 0.5
         space.add(body, car)
         cars.append(car)
-    
+
     if index == 1:
         index += 1
         for car in cars:
             car.body.apply_impulse(phys.Vec2d(1000,1000))
-        
+
     ### Clear screen
     screen.fill(THECOLORS["white"])
-    
+
     for car in cars:
         p = car.body.position
-        
-        
+
+
         #pygame.draw.circle(screen, THECOLORS["blue"], p, int(car.radius), 2)
         ps = car.get_points()
         ps = [(p.x, flipy(p.y)) for p in ps]
         ps += [ps[0]]
         pygame.draw.lines(screen, THECOLORS["red"], False, ps, 1)
-           
-           
+
+
         # Rotate 180 degrees because of the y coordinate flip
         angle_degrees = math.degrees(car.body.angle) + 180
         rotated_logo_img = pygame.transform.rotate(img, angle_degrees)
-        
+
         offset = phys.Vec2d(rotated_logo_img.get_size()) / 2.
         p = phys.Vec2d(p.x, flipy(p.y))
         p = p - offset
-        
+
         screen.blit(rotated_logo_img, p)
-        
-        
-    
+
+
+
      # Wall Physics
     for line in static_lines:
         line.elasticity = 0.95
