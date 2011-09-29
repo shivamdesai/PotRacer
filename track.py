@@ -1,5 +1,6 @@
 import random
 import pymunk as phys
+from pygame import Rect
 
 from settings import Settings
 
@@ -14,7 +15,7 @@ class Track:
         self.cameras = dict()
         self.trackStart = None
         self.trackEnd = None
-        
+
     def attachCamera(self, cam):
         #FIXME
         self.cameras[cam.uid] = None
@@ -50,29 +51,33 @@ class Track:
             self.trackEnd = newSeg
             #print right[0] - left[0]
 
-    def getPointsVisibleFromCam(self, cam):
+    def iterPointsVisibleFromCam(self, cam):
         #FIXME
         ptr = self.trackStart #should actually use cam pos as ref
         while ptr:
-            yield [(ptr.left[0]+cam.anchorPt.x,ptr.left[1]+cam.anchorPt.y),
-            (ptr.right[0]+cam.anchorPt.x,ptr.right[1]+cam.anchorPt.y)]
-            #yield [ptr.left, ptr.right]
+            left = (ptr.left[0]+cam.anchorPt.x,ptr.left[1]+cam.anchorPt.y)
+            right = (ptr.right[0]+cam.anchorPt.x,ptr.right[1]+cam.anchorPt.y)
+            dispRect = Rect(0,0,cam.displayRect.width,cam.displayRect.height)
+            if dispRect.collidepoint(*left) or dispRect.collidepoint(*right):
+                yield [left, right]
             ptr = ptr.next
 
-    def getSegmentsVisibleFromCam(self, cam):
+    def iterSegmentsVisibleFromCam(self, cam):
         #FIXME
         ptr = self.trackStart #should actually use cam pos as ref
         while ptr:
             if ptr.prev:
-                yield (ptr.prev.left[0]+cam.anchorPt.x,
-                       ptr.prev.left[1]+cam.anchorPt.y,
-                       ptr.prev.right[0]-ptr.prev.left[0],
-                       ptr.right[1]-ptr.prev.left[1])
+                segRect = Rect(ptr.prev.left[0]+cam.anchorPt.x,
+                                      ptr.prev.left[1]+cam.anchorPt.y,
+                                      ptr.prev.right[0]-ptr.prev.left[0],
+                                      ptr.right[1]-ptr.prev.left[1])
+                if segRect.colliderect((0,0,cam.displayRect.width,
+                                            cam.displayRect.height)):
+                    yield segRect
             ptr = ptr.next
 
-    def getPhysSegmentsVisibleFromCam(self, cam):
-        #FIXME
-        ptr = self.trackStart #should actually use cam pos as ref
+    def iterPhysSegments(self):
+        ptr = self.trackStart
         while ptr:
             yield ptr.segments
             ptr = ptr.next
@@ -87,7 +92,7 @@ class TrackSegment:
         self.next = next
         self.left = l
         self.right = r
-        if space:               
+        if space:
             thickness = 2.0
             self.physBody = phys.Body(phys.inf, phys.inf)
             left = (self.left[0], -self.left[1] + Settings.SCREEN_HEIGHT)
@@ -96,7 +101,7 @@ class TrackSegment:
                 self.segments = [phys.Segment(self.physBody, left, right, thickness)]
             elif self.prev:
                 pleft = (self.prev.left[0], -self.prev.left[1] + Settings.SCREEN_HEIGHT)
-                pright = (self.prev.right[0], -self.prev.right[1] + Settings.SCREEN_HEIGHT)        
+                pright = (self.prev.right[0], -self.prev.right[1] + Settings.SCREEN_HEIGHT)
                 self.segments = []
                 if pleft[0] == left[0]:
                     self.segments.append(phys.Segment(self.physBody, pleft, left, thickness))
