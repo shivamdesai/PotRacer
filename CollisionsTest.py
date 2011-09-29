@@ -28,10 +28,10 @@ cars = []
 
 ### Walls
 static_body = phys.Body(phys.inf, phys.inf)
-static_lines = [phys.Segment(static_body, phys.Vec2d(150.0, 150.0), phys.Vec2d(450.0, 150.0), 1.0),
-                phys.Segment(static_body, phys.Vec2d(450.0, 150.0), phys.Vec2d(450.0, 450.0), 1.0),
-                phys.Segment(static_body, phys.Vec2d(450.0, 450.0), phys.Vec2d(150.0, 450.0), 1.0),
-                phys.Segment(static_body, phys.Vec2d(150.0, 450.0), phys.Vec2d(150.0, 150.0), 1.0)]
+static_lines = [phys.Segment(static_body, (150, 150), (450, 150), 1.0),
+                phys.Segment(static_body, (450, 150), (450, 450), 1.0),
+                phys.Segment(static_body, (450, 450), (150, 450), 1.0),
+                phys.Segment(static_body, (150, 450), (150, 150), 1.0)]
 for line in static_lines:
     line.elasticity = 0.95
 space.add_static(static_lines)
