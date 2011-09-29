@@ -29,7 +29,7 @@ class CustomRenderer:
         def conv(vec, anchor):
             return (int(vec[0]+anchor.x), int(-vec[1]+Settings.SCREEN_HEIGHT+anchor.y))
         for cam in self.itercams():
-            cam.screen.fill((255,0,cam.uid*255))
+            cam.screen.fill((0,0,0))
             for r in self.track.iterSegmentsVisibleFromCam(cam):
                 pygame.draw.rect(cam.screen, (255,255,255), r)
             #for r in self.track.getPhysSegments():
@@ -43,6 +43,9 @@ class CustomRenderer:
                 pygame.draw.circle(cam.screen, (0,0,0), conv(ball.position, cam.anchorPt), 10, 2)
 
             self.display.blit(cam.screen, cam.displayRect)
+
+            pygame.draw.line(self.display, (0,0,50), (Settings.SCREEN_WIDTH//2, 0), (Settings.SCREEN_WIDTH//2, Settings.SCREEN_HEIGHT))
+            pygame.draw.line(self.display, (0,0,50), (0, Settings.SCREEN_HEIGHT//2), (Settings.SCREEN_WIDTH,Settings.SCREEN_HEIGHT//2))
 
 
         pygame.display.set_caption("POTRacer Demo at fps: "+str(clock.get_fps()))
