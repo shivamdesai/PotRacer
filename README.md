@@ -4,8 +4,9 @@ PotRacer is a videogame designed by two engineers from Franklin W. Olin College 
 
 Dependencies
 ============
-pygame (for the graphics)
-pymunk (for the physics)
+
+- pygame (for the graphics)
+- pymunk (for the physics)
 
 Running
 ========
