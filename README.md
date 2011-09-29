@@ -36,7 +36,9 @@ Authors
 -------
 
 **Shivam Desai**
+
 + http://github.com/shivamdesai
 
 **Julian Ceipek**
+
 + http://github.com/jceipek
