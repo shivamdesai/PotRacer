@@ -31,7 +31,7 @@ class CustomRenderer:
         for cam in self.itercams():
             cam.screen.fill((255,0,cam.uid*255))
             for r in self.track.getSegmentsVisibleFromCam(cam):
-                pygame.draw.rect(cam.screen, (0,255,0), r,1)
+                pygame.draw.rect(cam.screen, (0,0,0), r,1)
             for r in self.track.getPhysSegmentsVisibleFromCam(cam):
                 for s in r:
                     pygame.draw.line(cam.screen, (255,255,255), conv(s.a, cam.anchorPt), conv(s.b, cam.anchorPt))
@@ -40,7 +40,7 @@ class CustomRenderer:
                     pygame.draw.circle(cam.screen, (0,255,0), (int(p[0]),int(p[1])), 3)    
             
             for ball in self.testBalls.itervalues():
-                pygame.draw.circle(cam.screen, (0,255,0), conv(ball.position, cam.anchorPt), 10, 2)
+                pygame.draw.circle(cam.screen, (0,0,0), conv(ball.position, cam.anchorPt), 10, 2)
         
             self.display.blit(cam.screen, cam.displayRect)
             

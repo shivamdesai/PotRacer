@@ -88,7 +88,7 @@ class TrackSegment:
         self.left = l
         self.right = r
         if space:               
-            thickness = 1.0
+            thickness = 2.0
             self.physBody = phys.Body(phys.inf, phys.inf)
             left = (self.left[0], -self.left[1] + Settings.SCREEN_HEIGHT)
             right = (self.right[0], -self.right[1] + Settings.SCREEN_HEIGHT)
@@ -101,13 +101,13 @@ class TrackSegment:
                 if pleft[0] == left[0]:
                     self.segments.append(phys.Segment(self.physBody, pleft, left, thickness))
                 else:
-                    self.segments.append(phys.Segment(self.physBody, pleft, (left[0], pleft[1]), thickness))
-                    self.segments.append(phys.Segment(self.physBody, (left[0], pleft[1]), left, thickness))
+                    self.segments.append(phys.Segment(self.physBody, pleft, (pleft[0], left[1]), thickness))
+                    self.segments.append(phys.Segment(self.physBody, (pleft[0], left[1]), left, thickness))
                 if pright[0] == right[0]:
                     self.segments.append(phys.Segment(self.physBody, pright, right, thickness))
                 else:
-                    self.segments.append(phys.Segment(self.physBody, pright, (right[0], pright[1]), thickness))
-                    self.segments.append(phys.Segment(self.physBody, (right[0], pright[1]), right, thickness))
+                    self.segments.append(phys.Segment(self.physBody, pright, (pright[0], right[1]), thickness))
+                    self.segments.append(phys.Segment(self.physBody, (pright[0], right[1]), right, thickness))
             for line in self.segments:
                 line.elasticity = 0.95
             space.add_static(self.segments)

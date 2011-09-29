@@ -25,7 +25,7 @@ if __name__ == "__main__":
             
     
     track = Track()
-    for t in xrange(5):
+    for t in xrange(50):
         track.addSegment(space=space)
 
     camP1 = Camera( (0,0), (0,                      0,Settings.SCREEN_WIDTH/2,Settings.SCREEN_HEIGHT))
@@ -48,9 +48,9 @@ if __name__ == "__main__":
                 running = False
 
         #camP2.anchorPt.y -= timeDelta*0.5
-        #camP1.anchorPt.x -= timeDelta*0.05
-        dt = 1.0/60.0
-        for x in range(1):
+        camP1.anchorPt.y -= timeDelta * 0.15
+        dt = 1.0/600.0
+        for x in range(10):
             space.step(dt)
 
         renderer.render(clock)
