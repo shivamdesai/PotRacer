@@ -56,15 +56,15 @@ if __name__ == "__main__":
 
         #camP1.anchorPt.y -= timeDelta * 0.15
 
-
+        camP1.centerOnPhysPt(ball.position)
+        camP2.centerOnPhysPt(ball.position)
+        camP3.centerOnPhysPt(ball.position)
 
         dt = 1.0/600.0
         for x in range(10):
             space.step(dt)
 
-        camP1.centerOnPhysPt(ball.position)
-        camP2.centerOnPhysPt(ball.position)
-        camP3.centerOnPhysPt(ball.position)
+
 
         renderer.render(clock)
         timeDelta = clock.tick(Settings.MAX_FPS)

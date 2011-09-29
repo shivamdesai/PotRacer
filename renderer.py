@@ -40,12 +40,10 @@ class CustomRenderer:
                     pygame.draw.circle(cam.screen, (0,255,0), (int(p[0]),int(p[1])), 3)
 
             for ball in self.testBalls.itervalues():
-                pygame.draw.circle(cam.screen, (0,0,0), conv(ball.position, cam.anchorPt), 10, 2)
+                pygame.draw.circle(cam.screen, (0,0,0), conv(ball.position, cam.anchorPt), 12, 1)
 
             self.display.blit(cam.screen, cam.displayRect)
-
-            pygame.draw.line(self.display, (0,0,50), (Settings.SCREEN_WIDTH//2, 0), (Settings.SCREEN_WIDTH//2, Settings.SCREEN_HEIGHT))
-            pygame.draw.line(self.display, (0,0,50), (0, Settings.SCREEN_HEIGHT//2), (Settings.SCREEN_WIDTH,Settings.SCREEN_HEIGHT//2))
+            pygame.draw.rect(self.display, (0,0,50), cam.displayRect, 1)
 
 
         pygame.display.set_caption("POTRacer Demo at fps: "+str(clock.get_fps()))
