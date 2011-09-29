@@ -10,12 +10,25 @@ pymunk (for the physics)
 Running
 ========
 The WIP program can be run with
+
     $ python test.py
+
 in the root directory.
 
 Status
 ======
-PotRacer is currently under heavy development and doesn't actually do anything yet.
+PotRacer is currently under heavy development.
+
+Current features:
+
+- Arbitrary Split-Screen
+- Procedurally Generated Levels
+- Pymunk Physics Collisions
+
+Planned:
+
+- Input Handling
+- Winning and Losing
 
 
 Authors
