@@ -5,4 +5,4 @@ class Settings:
 
     MIN_TRACK_WIDTH = 80
 
-    FULLSCREEN = True # False
+    FULLSCREEN = False #True # False

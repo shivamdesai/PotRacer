@@ -3,7 +3,7 @@ from engine.window import Window
 from engine.manager import Manager
 from engine.ui import UI
 
-from screens import MenuScreen
+from screens.mainMenu import MenuScreen
 
 window = Window(windowTitle="POTRacer")
 
