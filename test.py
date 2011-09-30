@@ -2,8 +2,8 @@ import pygame
 import pymunk as phys
 from renderer import CustomRenderer
 from settings import Settings
-from track import Track
-from camera import Camera
+from gameObjects.track import Track
+from gameObjects.camera import Camera
 
 
 if __name__ == "__main__":
@@ -17,7 +17,8 @@ if __name__ == "__main__":
     space.gravity = (0.0, -900.0)
 
     ball = phys.Body(10, 100)
-    ball.position = phys.Vec2d(Settings.SCREEN_WIDTH/2, Settings.SCREEN_HEIGHT-30)
+    ball.position = phys.Vec2d(Settings.SCREEN_WIDTH/2,
+                               Settings.SCREEN_HEIGHT-30)
     shape = phys.Circle(ball, 10, (0,0))
     shape.friction = 0.5
     shape.collision_type = 2
@@ -52,10 +53,6 @@ if __name__ == "__main__":
             elif event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
                 running = False
 
-        #camP2.anchorPt.y -= timeDelta*0.5
-
-        #camP1.anchorPt.y -= timeDelta * 0.15
-
         camP1.centerOnPhysPt(ball.position)
         camP2.centerOnPhysPt(ball.position)
         camP3.centerOnPhysPt(ball.position)
@@ -63,8 +60,6 @@ if __name__ == "__main__":
         dt = 1.0/600.0
         for x in range(10):
             space.step(dt)
-
-
 
         renderer.render(clock)
         timeDelta = clock.tick(Settings.MAX_FPS)
