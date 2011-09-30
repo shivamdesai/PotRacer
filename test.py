@@ -16,13 +16,17 @@ if __name__ == "__main__":
     space = phys.Space()
     space.gravity = (0.0, -900.0)
 
-    ball = phys.Body(10, 100)
-    ball.position = phys.Vec2d(Settings.SCREEN_WIDTH/2,
+    points = [(0,0), (20,0), (10,33)]
+    mass = 10
+    moment = phys.moment_for_poly(mass, points)
+
+    racer = phys.Body(10, 100)
+    racer.position = phys.Vec2d(Settings.SCREEN_WIDTH/2,
                                Settings.SCREEN_HEIGHT-30)
-    shape = phys.Circle(ball, 10, (0,0))
+    shape = phys.Poly(racer, points)
     shape.friction = 0.5
-    shape.collision_type = 2
-    space.add(ball, shape)
+    shape.elasticity = 0.95
+    space.add(racer, shape)
 
 
     track = Track()
@@ -41,7 +45,7 @@ if __name__ == "__main__":
     renderer.addCamera(camP1)
     renderer.addCamera(camP2)
     renderer.addCamera(camP3)
-    renderer.addTestBall(ball)
+    renderer.addRacer(shape)
 
     timeDelta = clock.tick(Settings.MAX_FPS)
 
@@ -53,9 +57,9 @@ if __name__ == "__main__":
             elif event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
                 running = False
 
-        camP1.centerOnPhysPt(ball.position)
-        camP2.centerOnPhysPt(ball.position)
-        camP3.centerOnPhysPt(ball.position)
+        camP1.centerOnPhysPt(racer.position)
+        camP2.centerOnPhysPt(racer.position)
+        camP3.centerOnPhysPt(racer.position)
 
         dt = 1.0/600.0
         for x in range(10):
