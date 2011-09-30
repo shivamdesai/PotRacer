@@ -18,44 +18,44 @@ accumulator = 0.0 # Keeps track of "unsimulated" time after a frame
 currentTime = clock.tick(MAX_FPS)
 
 
-    while running:
-        for event in pygame.event.get():
-            if event.type == QUIT:
-                running = False
-            elif event.type == KEYDOWN and event.key == K_ESCAPE:
-                running = False
+while running:
+    for event in pygame.event.get():
+        if event.type == QUIT:
+            running = False
+        elif event.type == KEYDOWN and event.key == K_ESCAPE:
+            running = False
 
-        frameTime = clock.tick(MAX_FPS)
+    frameTime = clock.tick(MAX_FPS)
 
-        if ( frameTime > MAX_FRAME_TIME )
-            frameTime = MAX_FRAME_TIME   # avoid spiral of death
+    if ( frameTime > MAX_FRAME_TIME )
+        frameTime = MAX_FRAME_TIME   # avoid spiral of death
 
-        accumulator += frameTime;
+    accumulator += frameTime;
 
-        while ( accumulator >= dt )
-            #SIMULATE:
-            #previousState = currentState;
-            #integrate( currentState, t, dt );
-            t += dt
-            accumulator -= dt
+    while ( accumulator >= dt )
+        #SIMULATE:
+        #previousState = currentState;
+        #integrate( currentState, t, dt );
+        t += dt
+        accumulator -= dt
 
-        alpha = accumulator / dt # Interpolation constant
+    alpha = accumulator / dt # Interpolation constant
 
-        #INTERPOLATE:
-        #State state = currentState*alpha + previousState * ( 1.0 - alpha );
+    #INTERPOLATE:
+    #State state = currentState*alpha + previousState * ( 1.0 - alpha );
 
-        #RENDER:
-        #render( state );
+    #RENDER:
+    #render( state );
 
 
-        ### Update physics
-        dt = 1.0/50.0/10.0
-        for x in range(10):
-            space.step(dt)
+    ### Update physics
+    dt = 1.0/50.0/10.0
+    for x in range(10):
+        space.step(dt)
 
-        ### Flip screen
-        pygame.display.flip()
-        clock.tick(50)
+    ### Flip screen
+    pygame.display.flip()
+    clock.tick(50)
 
 if __name__ == '__main__':
     sys.exit(main())

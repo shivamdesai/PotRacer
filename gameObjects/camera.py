@@ -17,9 +17,13 @@ class Camera():
                                self.displayRect.height))
 
     def centerOnPhysPt(self, vec):
-        self.anchorPt.x = (-vec[0] + self.displayRect.width/2)
+        self.anchorPt.x = -vec[0] + self.displayRect.width/2
         self.anchorPt.y = vec[1] - Settings.SCREEN_HEIGHT + self.displayRect.height/2
-
+    
+    def centerOnPt(self, vec):
+        self.anchorPt.x = -vec[0] + self.displayRect.width/2
+        self.anchorPt.y = -vec[1] + self.displayRect.height/2
+    
     @classmethod
     def _incrementUID(cls):
         curr = Camera.nextUID

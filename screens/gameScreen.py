@@ -17,6 +17,7 @@ class GameScreen(Screen):
         self.track = self.generateNewTrack()
         self.renderer.setTrack(self.track)
         self.cameras = {}
+        self.racers = {}
         self.setPlayerCount(2)
         for cam in self.cameras.itervalues():
             self.renderer.addCamera(cam)
@@ -26,7 +27,14 @@ class GameScreen(Screen):
         for t in xrange(50):
             track.addSegment()
         return track
-
+    
+    def generateRacers(self, count):
+        for r in count:
+            start = Settings.SCREEN_WIDTH/2 - Settings.MIN_TRACK_WIDTH
+            offset = Settings.MIN_TRACK_WIDTH*2
+            
+            racer = Racer()
+        
     def setPlayerCount(self, count):
         if count == 1:
             camP1 = Camera((0,0),
