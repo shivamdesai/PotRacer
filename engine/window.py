@@ -61,7 +61,10 @@ class Window:
         """
         Initiates the game's main loop, which
         processes input, simulates the game
-        logic, and calls the renderer.
+        logic, and tells the ui to draw itself.
+        The ui is in charge of calling renderers
+        as necessary, but the window will update
+        the display surface every frame.
         """
         while self.active:
             for device in self.altInput:
@@ -72,12 +75,10 @@ class Window:
             for event in pygame.event.get():
                 self.manager.handle(event)
 
-            #self.displaySurface.fill((0,0,0)) #should go in manager
-
             self.manager.update(self.gameTime, self.gameFrametime)
-            #self.manager.draw(self.displaySurface)
 
-            #pygame.display.flip()
+            self.manager.draw(self.displaySurface)
+            pygame.display.flip()
 
             self.gameFrametime = self.gameClock.tick(Settings.MAX_FPS)
             self.gameTime += self.gameFrametime
