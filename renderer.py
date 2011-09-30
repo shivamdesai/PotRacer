@@ -24,7 +24,7 @@ class CustomRenderer:
     def itercams(self):
         return self.cameras.itervalues()
 
-    def render(self, clock):
+    def render(self, clock=None):
         def conv(vec, anchor):
             return (int(vec[0]+anchor.x), int(-vec[1]+Settings.SCREEN_HEIGHT+anchor.y))
         for cam in self.itercams():
@@ -41,11 +41,11 @@ class CustomRenderer:
             for racer in self.Racers.itervalues():
                 p = [conv(r, cam.anchorPt) for r in racer.get_points()]
                 pygame.draw.lines(cam.screen, (0,0,255) , False, p, 1)
-           
+
             self.display.blit(cam.screen, cam.displayRect)
             pygame.draw.rect(self.display, (0,0,50), cam.displayRect, 1)
 
-
-        pygame.display.set_caption("POTRacer Demo at fps: "+str(clock.get_fps()))
+        if clock:
+            pygame.display.set_caption("POTRacer Demo at fps: "+str(clock.get_fps()))
 
         pygame.display.flip()

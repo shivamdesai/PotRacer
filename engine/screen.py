@@ -34,7 +34,8 @@ class Screen(pygame.Surface):
         Draws the screen's background to the surface
         Note: May be changed later to add foreground/override
         """
-        self.background.draw(surf)
+        if self.background:
+            self.background.draw(surf)
 
     def setCaches(textCache=None, imageCache=None):
         """
@@ -46,7 +47,8 @@ class Screen(pygame.Surface):
             Screen.imageCache = imageCache
 
     def update(self, *args):
-        self.background.update(self, *args)
+        if self.background:
+            self.background.update(self, *args)
 
     def getCallbackDict(self):
         """

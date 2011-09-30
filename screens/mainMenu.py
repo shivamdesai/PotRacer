@@ -6,6 +6,7 @@ from engine.screen import Screen
 from engine.background import Background
 
 from menuItem import MenuItem
+from gameScreen import GameScreen
 
 class MenuScreen(Screen):
 
