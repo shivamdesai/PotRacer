@@ -5,16 +5,15 @@ class CustomRenderer:
     def __init__(self):
         self.cameras = dict()
         self.track = None
-        self.testBalls = dict()
+        self.Racers = dict()
 
         pygame.init()
         self.display = pygame.display.set_mode((Settings.SCREEN_WIDTH,
                                           Settings.SCREEN_HEIGHT))
         pygame.display.set_caption("POTRacer Demo")
 
-    def addTestBall(self, ball):
-        self.testBalls[id(ball)] = ball
-
+    def addRacer(self, racer):
+        self.Racers[id(racer)] = racer
 
     def setTrack(self, track):
         self.track = track
@@ -39,9 +38,10 @@ class CustomRenderer:
                 for p in r:
                     pygame.draw.circle(cam.screen, (0,255,0), (int(p[0]),int(p[1])), 3)
 
-            for ball in self.testBalls.itervalues():
-                pygame.draw.circle(cam.screen, (0,0,0), conv(ball.position, cam.anchorPt), 12, 1)
-
+            for racer in self.Racers.itervalues():
+                p = [conv(r, cam.anchorPt) for r in racer.get_points()]
+                pygame.draw.lines(cam.screen, (0,0,255) , False, p, 1)
+           
             self.display.blit(cam.screen, cam.displayRect)
             pygame.draw.rect(self.display, (0,0,50), cam.displayRect, 1)
 
