@@ -11,8 +11,8 @@ class Reader:
     CLEAR_LED   = 0x04
     SET_CONFIG  = 0x09
 
-    def __init__(self):
-        self._dev = usb.core.find(idVendor=0x6666, idProduct=0x0003)
+    def __init__(self, idVendor=0x6666, idProduct=0x0003):
+        self._dev = usb.core.find(idVendor=idVendor, idProduct=idProduct)
 
     def readPotentiometer(self, player):
         """
@@ -81,9 +81,6 @@ class Reader:
                 raise ValueError, "Invalid io value specified. Can only be 'r' or 'w'"
         except:
             raise IOError, "Unable to perform vendor request."
-
-    def close(self):
-        usb.close_device(dev)
 
 if __name__ == "__main__":
     reader = Reader()

@@ -142,10 +142,11 @@ class Manager:
 
         #catch events associated with only the types
         if eventName in self.eventTypeToString:
-            string = self.eventTypeToString[eventName]
+            #string = self.eventTypeToString[eventName] #Patrick, I couldn't figure out how this works
+            string = self.getEventString(event)
             if string in self.screenInputDict:
                 self.screenInputDict[string][1]()
-
+                
         #extensible beyond KEYUP and KEYDOWN events to user defined events
         if hasattr(event,'key'):
             keyName = pygame.key.name(event.key)
