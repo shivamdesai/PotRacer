@@ -27,7 +27,7 @@ class GameScreen(Screen):
 
     def generatePhysSpace(self):
         space = phys.Space()
-        space.gravity = (0.0, 0.0)
+        space.gravity = (0.0, -300.0)
         return space
 
     def generateNewTrack(self):
