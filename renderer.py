@@ -5,7 +5,7 @@ class CustomRenderer:
     def __init__(self):
         self.cameras = dict()
         self.track = None
-        self.Racers = dict()
+        self.racers = dict()
 
         pygame.init()
         self.display = pygame.display.set_mode((Settings.SCREEN_WIDTH,
@@ -13,7 +13,23 @@ class CustomRenderer:
         pygame.display.set_caption("POTRacer Demo")
 
     def addRacer(self, racer):
-        self.Racers[id(racer)] = racer
+        self.racers[id(racer)] = racer
+
+    def addRacers(self, racers):
+        if type(racers) == dict:
+            for racer in racers.itervalues():
+                self.racers[id(racer)] = racer
+        elif type(racers) == list or type(racers) == tuple:
+            for racer in racers:
+                self.racers[id(racer)] = racer
+
+    def addCameras(self, cameras):
+        if type(cameras) == dict:
+            for camera in cameras.itervalues():
+                self.cameras[id(camera)] = camera
+        elif type(cameras) == list or type(cameras) == tuple:
+            for camera in cameras:
+                self.cameras[id(camera)] = camera
 
     def setTrack(self, track):
         self.track = track
@@ -23,7 +39,10 @@ class CustomRenderer:
 
     def itercams(self):
         return self.cameras.itervalues()
-
+        
+    def iterracers(self):
+        return self.racers.itervalues()
+        
     def render(self, clock=None):
         def conv(vec, anchor):
             return (int(vec[0]+anchor.x), int(-vec[1]+Settings.SCREEN_HEIGHT+anchor.y))
@@ -38,8 +57,8 @@ class CustomRenderer:
                 for p in r:
                     pygame.draw.circle(cam.screen, (0,255,0), (int(p[0]),int(p[1])), 3)
 
-            for racer in self.Racers.itervalues():
-                p = [conv(r, cam.anchorPt) for r in racer.get_points()]
+            for racer in self.iterracers():
+                p = [conv(r, cam.anchorPt) for r in racer.getPhysPoints()]
                 pygame.draw.lines(cam.screen, (0,0,255) , False, p, 1)
 
             self.display.blit(cam.screen, cam.displayRect)
