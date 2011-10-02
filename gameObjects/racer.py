@@ -32,10 +32,13 @@ class Racer:
     def getPhysPoints(self):
         return self.shape.get_points()
         
-    def steerLeft(self):
-        self.body.torque += 50
-        print "GO LEFT"
-
-    def steerRight(self):
-        self.body.torque -= 50
-        print "GO RIGHT"
+    def steer(self, value):
+        curr = self.body.rotation_vector.angle
+        print curr
+        des = value
+        self.body.angular_velocity = 0.25*(des-curr)
+        #self.body.torque = value
+        
+    def boost(self):
+        print self.body.rotation_vector.perpendicular()
+        self.body.apply_impulse(-self.body.rotation_vector.perpendicular()*10000)
