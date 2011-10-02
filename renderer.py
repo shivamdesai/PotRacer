@@ -1,12 +1,17 @@
 import pygame
+import math
+import pymunk as phys
+
 from settings import Settings
+from engine.functions import pathJoin
 
 class CustomRenderer:
-    def __init__(self):
+    
+    def __init__(self, imageCache=None):
         self.cameras = dict()
         self.track = None
         self.racers = dict()
-
+        CustomRenderer.imageCache = imageCache
         pygame.init()
         self.display = pygame.display.set_mode((Settings.SCREEN_WIDTH,
                                           Settings.SCREEN_HEIGHT))
@@ -21,7 +26,12 @@ class CustomRenderer:
                 self.racers[id(racer)] = racer
         elif type(racers) == list or type(racers) == tuple:
             for racer in racers:
-                self.racers[id(racer)] = racer
+                racerPath0 = pathJoin(('images','beta.png'))
+                racerPath1 = pathJoin(('images','alpha.png'))
+                if not racerPath0 in self.racers:
+                    self.racers[racerPath0] = racer
+                else:
+                    self.racers[racerPath1] = racer
 
     def addCameras(self, cameras):
         if type(cameras) == dict:
@@ -57,9 +67,14 @@ class CustomRenderer:
                 for p in r:
                     pygame.draw.circle(cam.screen, (0,255,0), (int(p[0]),int(p[1])), 3)
 
-            for racer in self.iterracers():
-                p = [conv(r, cam.anchorPt) for r in racer.getPhysPoints()]
-                pygame.draw.lines(cam.screen, (0,0,255) , False, p, 1)
+            for racerImagePath,racer in self.racers.iteritems():
+                #p = [conv(r, cam.anchorPt) for r in racer.getPhysPoints()]
+                #pygame.draw.lines(cam.screen, (0,0,255) , False, p, 1)
+                racerImage = self.imageCache.getImage(racerImagePath, colorkey='alpha', mask=False)
+                degrees = math.degrees(racer.body.angle)
+                rotatedImage = pygame.transform.rotate(racerImage, degrees)
+                offset = phys.Vec2d(rotatedImage.get_size()) / 2.
+                cam.screen.blit(rotatedImage, rotatedImage.get_rect().move(racer.getPos()+cam.anchorPt-offset))
 
             self.display.blit(cam.screen, cam.displayRect)
             pygame.draw.rect(self.display, (0,0,50), cam.displayRect, 1)

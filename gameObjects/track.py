@@ -114,5 +114,5 @@ class TrackSegment:
                     self.segments.append(phys.Segment(self.physBody, pright, (pright[0], right[1]), thickness))
                     self.segments.append(phys.Segment(self.physBody, (pright[0], right[1]), right, thickness))
             for line in self.segments:
-                line.elasticity = 0.01
+                line.elasticity = 0.1
             space.add_static(self.segments)
