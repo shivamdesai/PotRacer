@@ -515,60 +515,77 @@ void ClassRequests(void) {
 }
 
 unsigned char get_pot(short pot) {
-	if (pot)
-		ADCON0 = 0b00000011;
-	else	
-		ADCON0 = 0b00000111;
-	while (ADCON0bits.GO_DONE==1) {}
-	return ADRESH;
+    // Reads from a specified potentiometer 'pot'
+    // using analog to digital conversion
+    if (pot)
+        ADCON0 = 0b00000011;
+    else
+        ADCON0 = 0b00000111;
+    while (ADCON0bits.GO_DONE==1) {}
+    return ADRESH;
 }
 
 short get_button(short button) {
-	if (button)
-		return P0_BUTTON;
-	else	
-		return P1_BUTTON;
+    // Reads from a specified button 'button'
+    if (button)
+        return P0_BUTTON;
+    else
+        return P1_BUTTON;
 }
 
 short set_LED(short led) {
-	if (led)
-		P0_LED = 1;
-	else	
-		P1_LED = 1;
+    // Turns on the specified led 'led'
+    if (led)
+        P0_LED = 1;
+    else
+        P1_LED = 1;
 }
 
 short clear_LED(short led) {
-	if (led)
-		P0_LED = 0;
-	else	
-		P1_LED = 0;
+    // Turns off the specified led 'led'
+    if (led)
+        P0_LED = 0;
+    else
+        P1_LED = 0;
 }
 
+// This function is called by ServiceUSB(), when a Vendor Request
+// is received
 void VendorRequests(void) {
-	switch (USB_buffer_data[bRequest]) {
-		case READ_POT:
-			BD0I.address[0] = get_pot(USB_buffer_data[wValue]);
-			BD0I.bytecount = 0x01;		// set EP0 IN byte count to 1
-			BD0I.status = 0xC8;			// send packet as DATA1, set UOWN bit
-			break;
-		case READ_BUTTON:
-			BD0I.address[0] = get_button(USB_buffer_data[wValue]);
-			BD0I.bytecount = 0x01;		// set EP0 IN byte count to 1
-			BD0I.status = 0xC8;			// send packet as DATA1, set UOWN bit
-			break;
-		case SET_LED:
-			set_LED(USB_buffer_data[wValue]);
-			BD0I.bytecount = 0x00;		// set EP0 IN byte count to 1
-			BD0I.status = 0xC8;			// send packet as DATA1, set UOWN bit
-			break;
-		case CLEAR_LED:
-			clear_LED(USB_buffer_data[wValue]);
-			BD0I.bytecount = 0x00;		// set EP0 IN byte count to 1
-			BD0I.status = 0xC8;			// send packet as DATA1, set UOWN bit
-			break;
-		default:
-			USB_error_flags |= 0x01;	// set Request Error Flag
-	}
+    switch (USB_buffer_data[bRequest]) {
+        case READ_POT:
+            // When this request is received, send a message to
+            // the computer, telling it the value of a potentiometer
+            // specified by wValue in the usb_control_transfer request
+            BD0I.address[0] = get_pot(USB_buffer_data[wValue]);
+            BD0I.bytecount = 0x01;      // set EP0 IN byte count to 1
+            BD0I.status = 0xC8;         // send packet as DATA1, set UOWN bit
+            break;
+        case READ_BUTTON:
+            // When this request is received, send a message to
+            // the computer, telling it the value of a button
+            // specified by wValue in the usb_control_transfer request
+            BD0I.address[0] = get_button(USB_buffer_data[wValue]);
+            BD0I.bytecount = 0x01;      // set EP0 IN byte count to 1
+            BD0I.status = 0xC8;         // send packet as DATA1, set UOWN bit
+            break;
+        case SET_LED:
+            // When this request is received, turn on the LED
+            // specified by wValue in the usb_control_transfer request
+            set_LED(USB_buffer_data[wValue]);
+            BD0I.bytecount = 0x00;      // set EP0 IN byte count to 1
+            BD0I.status = 0xC8;         // send packet as DATA1, set UOWN bit
+            break;
+        case CLEAR_LED:
+            // When this request is received, turn off the LED
+            // specified by wValue in the usb_control_transfer request
+            clear_LED(USB_buffer_data[wValue]);
+            BD0I.bytecount = 0x00;      // set EP0 IN byte count to 1
+            BD0I.status = 0xC8;         // send packet as DATA1, set UOWN bit
+            break;
+        default:
+            USB_error_flags |= 0x01;    // set Request Error Flag
+    }
 }
 
 void ProcessInToken(void) {
@@ -638,21 +655,25 @@ void SendDescriptorPacket(void) {
 }
 
 void main(void) {
-	unsigned char temp;
+    unsigned char temp;
 
-    PORTA = 0b00000000;							// clear all PORTA pins
-	TRISA = 0b00001111;						    // set up as digital input and the rest of PORTA as digital outputs
-    ADCON1 = 0b00001101;						// set up PORTA to be digital I/Os
-    ADCON2 = 0b00101110;
+    PORTA = 0b00000000;      // clear all PORTA pins
+    TRISA = 0b00001111;      // configure RA0..RA3 as inputs
+                             // (the buttons and potentiometers)
+    ADCON1 = 0b00001101;     // Configure the potentiometers to be
+                             // analog, and the other pins to be digital
+    ADCON2 = 0b00101110;     // configure A/D module result to left justified,
+                             // acquisition time to 32 us,
+                             // and clock period to 2.67 us
+    InitUSB();               // initialize the USB registers and serial
+                             // interface engine
 
-	T0CON = 0b10000101;							// initialize Timer0 to go off every 700 ms
+    // service USB requests while the peripheral is not configured
+    while (USB_USWSTAT != CONFIG_STATE) {
+        ServiceUSB();
+    }
 
-	InitUSB();									// initialize the USB registers and serial interface engine
-	while (USB_USWSTAT!=CONFIG_STATE) {			// while the peripheral is not configured...
-		ServiceUSB();							// ...service USB requests
-	}
-
-	while (1) {
-		ServiceUSB();							// service any pending USB requests
+    while (1) {
+        ServiceUSB(); // service any pending USB requests
     }
 }
